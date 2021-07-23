@@ -1,7 +1,7 @@
 %global galeradoc %{buildroot}%{_docdir}/galera
 Name:           galera
 Version:        25.3.26
-Release:        3
+Release:        4
 Summary:        Synchronous multi-master replication library
 License:        GPLv2
 URL:            http://galeracluster.com/
@@ -14,7 +14,7 @@ Source2:        garbd-wrapper
 #https://github.com/codership/galera/commit/71685db8da72b81a0950c19269281d10ae179706.patch
 Patch0000:      galera-python3.patch
 
-BuildRequires:  asio-devel boost-devel check-devel gcc-c++ openssl-devel python3-scons systemd gdb
+BuildRequires:  asio-devel boost-devel check-devel gcc-c++ openssl-devel python3-scons systemd
 Requires:       nmap-ncat
 
 Requires(post,preun,postun):  systemd
@@ -69,6 +69,9 @@ install -D -m 755 libgalera_smm.so              %{buildroot}%{_libdir}/galera/li
 %{_unitdir}/garbd.service
 
 %changelog
+* Wed Jul 21 2021 lingsheng <lingsheng@huawei.com> - 25.3.26-4
+- Remove unnecessary buildrequire gdb
+
 * Sat Mar 21 2020 songnannan <songnannan2@huawei.com> - 25.3.26-3
 - add gdb in buildrequires
 
