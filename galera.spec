@@ -1,7 +1,7 @@
 %global galeradoc %{buildroot}%{_docdir}/galera
 Name:           galera
 Version:        25.3.26
-Release:        4
+Release:        5
 Summary:        Synchronous multi-master replication library
 License:        GPLv2
 URL:            http://galeracluster.com/
@@ -69,6 +69,9 @@ install -D -m 755 libgalera_smm.so              %{buildroot}%{_libdir}/galera/li
 %{_unitdir}/garbd.service
 
 %changelog
+* Mon Aug 16 2021 lingsheng <lingsheng@huawei.com> - 25.3.26-5
+- Remove unsupported reload option
+
 * Wed Jul 21 2021 lingsheng <lingsheng@huawei.com> - 25.3.26-4
 - Remove unnecessary buildrequire gdb
 
