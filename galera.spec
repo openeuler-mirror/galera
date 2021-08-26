@@ -1,11 +1,11 @@
 %global galeradoc %{buildroot}%{_docdir}/galera
 Name:           galera
-Version:        25.3.26
-Release:        5
+Version:        26.4.8
+Release:        1
 Summary:        Synchronous multi-master replication library
 License:        GPLv2
 URL:            http://galeracluster.com/
-Source0:        http://releases.galeracluster.com/%{name}-3.26/source/%{name}-3-%{version}.tar.gz
+Source0:        http://releases.galeracluster.com/%{name}-4.8/source/%{name}-4-%{version}.tar.gz
 Source1:        garbd.service
 #systemd startup script
 Source2:        garbd-wrapper
@@ -23,7 +23,9 @@ Requires(post,preun,postun):  systemd
 This is Galera replication - Codership's implementation of the write set replication (wsrep) interface.
 
 %prep
-%autosetup -n %{name}-3-%{version} -p1
+%autosetup -n %{name}-4-%{version} -p1
+
+sed -i '/^GALERA_VER/s/API + //' wsrep/tests/SConscript
 
 %build
 %{set_build_flags}
@@ -38,8 +40,6 @@ scons-3 %{?_smp_mflags} strict_build_flags=1
 %install
 install -D -m 644 COPYING                       %{galeradoc}/COPYING
 install -D -m 644 asio/LICENSE_1_0.txt          %{galeradoc}/LICENSE.asio
-install -D -m 644 chromium/LICENSE              %{galeradoc}/LICENSE.chromium
-install -D -m 644 www.evanjones.ca/LICENSE      %{galeradoc}/LICENSE.crc32
 install -D -m 644 scripts/packages/README       %{galeradoc}/README
 install -D -m 644 scripts/packages/README-MySQL %{galeradoc}/README-MySQL
 install -D -m 644 garb/files/garb.cnf           %{buildroot}%{_sysconfdir}/sysconfig/garb
@@ -69,6 +69,9 @@ install -D -m 755 libgalera_smm.so              %{buildroot}%{_libdir}/galera/li
 %{_unitdir}/garbd.service
 
 %changelog
+* Wed Aug 25 2021 lingsheng <lingsheng@huawei.com> - 26.4.8-1
+- Update to 26.4.8
+
 * Mon Aug 16 2021 lingsheng <lingsheng@huawei.com> - 25.3.26-5
 - Remove unsupported reload option
 
