@@ -1,7 +1,7 @@
 %global galeradoc %{buildroot}%{_docdir}/galera
 Name:           galera
 Version:        26.4.8
-Release:        1
+Release:        2
 Summary:        Synchronous multi-master replication library
 License:        GPLv2
 URL:            http://galeracluster.com/
@@ -13,6 +13,10 @@ Source2:        garbd-wrapper
 #Use decode to make the SConstruct Python3 compatible
 #https://github.com/codership/galera/commit/71685db8da72b81a0950c19269281d10ae179706.patch
 Patch0000:      galera-python3.patch
+# Performance issue, make timeout 10x larger.
+%ifarch riscv64
+Patch0001:	0001-Fix-timeout-for-riscv.patch
+%endif
 
 BuildRequires:  asio-devel boost-devel check-devel gcc-c++ openssl-devel python3-scons systemd
 Requires:       nmap-ncat
@@ -69,6 +73,9 @@ install -D -m 755 libgalera_smm.so              %{buildroot}%{_libdir}/galera/li
 %{_unitdir}/garbd.service
 
 %changelog
+* Sat Feb 19 2022 YukariChiba <i@0x7f.cc> - 26.4.8-2
+- Fix test timeout for RISC-V
+
 * Wed Aug 25 2021 lingsheng <lingsheng@huawei.com> - 26.4.8-1
 - Update to 26.4.8
 

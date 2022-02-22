@@ -1,0 +1,67 @@
+--- a/galerautils/tests/gu_asio_test.cpp
++++ b/galerautils/tests/gu_asio_test.cpp
+@@ -2134,6 +2134,7 @@
+     suite_add_tcase(s, tc);
+ 
+     tc = tcase_create("test_ssl_async_read_write_large");
++    tcase_set_timeout(tc, 100);
+     tcase_add_test(tc, test_ssl_async_read_write_large);
+     suite_add_tcase(s, tc);
+ 
+--- a/galerautils/tests/gu_fifo_test.c
++++ b/galerautils/tests/gu_fifo_test.c
+@@ -243,7 +243,7 @@
+     suite_add_tcase (s, tc);
+     tcase_add_test  (tc, gu_fifo_test);
+     tcase_add_test  (tc, gu_fifo_cancel_test);
+-    tcase_set_timeout(tc, 60);
++    tcase_set_timeout(tc, 600);
+ 
+     return s;
+ }
+--- a/galerautils/tests/gu_lock_step_test.c
++++ b/galerautils/tests/gu_lock_step_test.c
+@@ -14,7 +14,7 @@
+ 
+ #define TEST_USLEEP 1000 // 1ms
+ #define WAIT_FOR(cond)                                                  \
+-    { int count = 1000; while (--count && !(cond)) { usleep (TEST_USLEEP); }}
++    { int count = 100000; while (--count && !(cond)) { usleep (TEST_USLEEP); }}
+ 
+ gu_lock_step_t LS;
+ 
+@@ -28,7 +28,7 @@
+ 
+ START_TEST (gu_lock_step_test)
+ {
+-    const long  timeout = 500; // 500 ms
++    const long  timeout = 50000; // 50000 ms
+     long        ret;
+     gu_thread_t thr1, thr2;
+ 
+@@ -90,7 +90,7 @@
+ }
+ END_TEST
+ 
+-#define RACE_ITERATIONS 1000
++#define RACE_ITERATIONS 10000
+ 
+ static void*
+ lock_step_race (void* arg)
+@@ -105,7 +105,7 @@
+ 
+ START_TEST (gu_lock_step_race)
+ {
+-    const long  timeout = 500; // 500 ms
++    const long  timeout = 50000; // 50000 ms
+     long        ret, i;
+     gu_thread_t thr1;
+ 
+@@ -137,6 +137,7 @@
+   TCase *tcase = tcase_create("gu_lock_step");
+ 
+   suite_add_tcase (suite, tcase);
++  tcase_set_timeout(tcase, 120);
+   tcase_add_test  (tcase, gu_lock_step_test);
+   tcase_add_test  (tcase, gu_lock_step_race);
+   return suite;
