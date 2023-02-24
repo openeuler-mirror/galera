@@ -1,7 +1,7 @@
 %global galeradoc %{buildroot}%{_docdir}/galera
 Name:           galera
 Version:        26.4.8
-Release:        1
+Release:        2
 Summary:        Synchronous multi-master replication library
 License:        GPLv2
 URL:            http://galeracluster.com/
@@ -35,7 +35,7 @@ CFLAGS=`echo $CFLAGS| sed -e "s|-Wp,-D_GLIBCXX_ASSERTIONS||g" `
 CXXFLAGS=`echo $CXXFLAGS| sed -e "s|-Wp,-D_GLIBCXX_ASSERTIONS||g" `
 export CPPFLAGS CFLAGS CXXFLAGS
 
-scons-3 %{?_smp_mflags} strict_build_flags=1
+scons-3 %{?_smp_mflags} strict_build_flags=0
 
 %install
 install -D -m 644 COPYING                       %{galeradoc}/COPYING
@@ -69,6 +69,9 @@ install -D -m 755 libgalera_smm.so              %{buildroot}%{_libdir}/galera/li
 %{_unitdir}/garbd.service
 
 %changelog
+* Thu Dec 22 2022 wanglin <wangl29@chinatelecom.cn> - 26.4.8-2
+- Set strict_build_flags=0 and fix changelog date
+
 * Wed Aug 25 2021 lingsheng <lingsheng@huawei.com> - 26.4.8-1
 - Update to 26.4.8
 
@@ -81,5 +84,5 @@ install -D -m 755 libgalera_smm.so              %{buildroot}%{_libdir}/galera/li
 * Sat Mar 21 2020 songnannan <songnannan2@huawei.com> - 25.3.26-3
 - add gdb in buildrequires
 
-* Thu Mar 4 2020 zhouyihang<zhouyihang1@huawei.com> - 25.3.26-2
+* Wed Mar 4 2020 zhouyihang<zhouyihang1@huawei.com> - 25.3.26-2
 - Pakcage init
