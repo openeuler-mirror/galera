@@ -1,7 +1,7 @@
 %global galeradoc %{buildroot}%{_docdir}/galera
 Name:           galera
 Version:        26.4.8
-Release:        2
+Release:        3
 Summary:        Synchronous multi-master replication library
 License:        GPLv2
 URL:            http://galeracluster.com/
@@ -33,6 +33,11 @@ sed -i '/^GALERA_VER/s/API + //' wsrep/tests/SConscript
 CPPFLAGS=`echo $CPPFLAGS| sed -e "s|-Wp,-D_GLIBCXX_ASSERTIONS||g" `
 CFLAGS=`echo $CFLAGS| sed -e "s|-Wp,-D_GLIBCXX_ASSERTIONS||g" `
 CXXFLAGS=`echo $CXXFLAGS| sed -e "s|-Wp,-D_GLIBCXX_ASSERTIONS||g" `
+%if "%toolchain" == "clang"
+  CPPFLAGS="$CPPFLAGS -Wno-error=unused-but-set-variable"
+  CFLAGS="$CFLAGS -Wno-error=unused-but-set-variable"
+%endif
+
 export CPPFLAGS CFLAGS CXXFLAGS
 
 scons-3 %{?_smp_mflags} strict_build_flags=0
@@ -69,6 +74,9 @@ install -D -m 755 libgalera_smm.so              %{buildroot}%{_libdir}/galera/li
 %{_unitdir}/garbd.service
 
 %changelog
+* Thu Apr 20 2023 jammyjellyfish <jammyjellyfish255@outlook.com> - 26.4.8-3
+- Fix clang build error
+
 * Thu Dec 22 2022 wanglin <wangl29@chinatelecom.cn> - 26.4.8-2
 - Set strict_build_flags=0 and fix changelog date
 
